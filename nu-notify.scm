@@ -1,3 +1,5 @@
+(use-modules (redis))
+
 (define (run-unix-cmd cmd)
   ;;; Print to stdout on error
   ;;; TODO: save to local redis queue instead
@@ -12,3 +14,7 @@
           ))
     )
   )
+
+(define conn (redis-connect))
+(redis-send conn (lpush '(queue:error "error-log")))
+(redis-close conn)
