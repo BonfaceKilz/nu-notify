@@ -3,7 +3,7 @@
 ;; Copyright (C) 2019 Bonface M. K.
 
 ;; Author: Bonface M. K.
-;; Keywords: notifacation, tools
+;; Keywords: notification, monitoring
 ;; Package-Requires: ((redis) (ice-9 format))
 
 ;;; License:
