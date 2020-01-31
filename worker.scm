@@ -3,11 +3,11 @@
 
 ;;; (nu-notify-worker) --- Notification worker for Guile
 
-;; Copyright (C) 2019 Bonface M. K.
+;; Copyright (C) 2020 Bonface M. K.
 
 ;; Author: Bonface M. K.
 ;; Keywords: notification, monitoring
-;; Package-Requires: ((redis))
+;; Requires: ((redis))
 
 ;;; License:
 
