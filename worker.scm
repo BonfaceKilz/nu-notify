@@ -1,4 +1,7 @@
-;;; (nu-notify-worker) --- Notification module for Guile
+#!/usr/local/bin/guile -s
+!#
+
+;;; (nu-notify-worker) --- Notification worker for Guile
 
 ;; Copyright (C) 2019 Bonface M. K.
 
@@ -29,13 +32,43 @@
 ;; Dequeue messages from redis. You should wrap this in a daemon
 
 ;;; Code:
-
 (use-modules (redis))
+(use-modules (rnrs bytevectors))
+(use-modules (ice-9 iconv))
+(use-modules (ice-9 binary-ports))
+(use-modules (ice-9 textual-ports))
+(use-modules (ice-9 rdelim))
+
+(define conn (redis-connect))
 
 (define (dequeue-error conn)
   (begin
     (display (redis-send conn (lpop '(queue:error))))
+    (redis-close conn)
+    (newline)))
+
+(define (redis-sock-get conn)
+  (let ((get-sock
+	 (record-accessor
+	  (record-type-descriptor conn)
+	  (caddr (record-type-fields (record-type-descriptor conn))))))
+    (get-sock conn)))
+
+(define (subscribe-listen redis-sock)
+  (let ((sub-buf (make-bytevector 1024)))
+    (recv! redis-sock sub-buf)
+    (display (read-delimited
+	      "\0"
+	      (open-input-string (bytevector->string sub-buf "utf8"))))
     (newline)
-    (redis-close conn)))
+    (begin
+      (dequeue-error (redis-connect))      
+      (subscribe-listen redis-sock))
+    ))
+
+(define redis-socket (redis-sock-get conn))
+
+(redis-send conn (subscribe '(channel:error)))
+(subscribe-listen redis-socket)
 
 ;;; nu-notify-worker ends here
