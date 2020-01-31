@@ -43,7 +43,7 @@
       )))
 
 (define (run-unix-cmd cmd)
-  "Wrap the unixy command in guile. Anything with an exit status > 1 is
+  "Wrap the unixy command in guile. Anything with an exit status >= 1 is
 considered an error"
   (let ((pid (system cmd)))
     (if (> (status:exit-val pid) 0)
