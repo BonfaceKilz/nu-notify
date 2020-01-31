@@ -61,10 +61,8 @@
 	      "\0"
 	      (open-input-string (bytevector->string sub-buf "utf8"))))
     (newline)
-    (begin
-      (dequeue-error (redis-connect))      
-      (subscribe-listen redis-sock))
-    ))
+    (dequeue-error (redis-connect))      
+    (subscribe-listen redis-sock)))
 
 (define redis-socket (redis-sock-get conn))
 
