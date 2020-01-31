@@ -28,9 +28,8 @@
 
 ;; Queue messages into redis
 
-;;; System Requirements:
-
 ;;; Code:
+
 (define-module (nu-notify)
   #:use-module (ice-9 format)
   #:use-module (redis))
