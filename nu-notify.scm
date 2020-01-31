@@ -1,4 +1,4 @@
-;;; (nu-notify) --- Simple notifications for Guile
+;;; (nu-notify) --- Simple notifications module for Guile
 
 ;; Copyright (C) 2019 Bonface M. K.
 
@@ -29,9 +29,9 @@
 ;; Queue messages into redis
 
 ;;; Code:
-
-(use-modules (redis)
-             (ice-9 format))
+(define-module (nu-notify)
+  #:use-module (redis)
+  #:export (run-unix-cmd))
 
 (define (enqueue-error error-message conn)
   (let ((error-sexp (format #f "~a" error-message)))
