@@ -1,4 +1,8 @@
 (use-modules (redis))
+(define (enqueue-error error-message conn)
+  (begin
+    (redis-send conn (lpush `(queue:error ,error-message)))
+    (redis-close conn)))
 
 (define (run-unix-cmd cmd)
   ;;; Print to stdout on error
