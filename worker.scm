@@ -42,12 +42,14 @@
 (define conn (redis-connect))
 
 (define (dequeue-error conn)
+  "Remove the error from the queue"
   (begin
     (display (redis-send conn (lpop '(queue:error))))
     (redis-close conn)
     (newline)))
 
 (define (redis-sock-get conn)
+  "Get a socket from the connection"
   (let ((get-sock
 	 (record-accessor
 	  (record-type-descriptor conn)
@@ -55,6 +57,7 @@
     (get-sock conn)))
 
 (define (subscribe-listen redis-sock)
+  "Listener for the error channel"
   (let ((sub-buf (make-bytevector 1024)))
     (recv! redis-sock sub-buf)
     (display (read-delimited

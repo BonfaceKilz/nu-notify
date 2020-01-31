@@ -26,7 +26,7 @@
 
 ;;; Commentary:
 
-;; Queue messages into redis
+;; Queue messages into redis and publish on error channel
 
 ;;; Code:
 (define-module (nu-notify)
@@ -34,6 +34,7 @@
   #:export (run-unix-cmd))
 
 (define (enqueue-error error-message conn)
+  "En-queue error and publish to error channel then close the connection"
   (let ((error-sexp (format #f "~a" error-message)))
     (begin
       (redis-send conn (lpush `(queue:error ,error-sexp)))
@@ -42,8 +43,8 @@
       )))
 
 (define (run-unix-cmd cmd)
-  ;;; Run command command and on error,
-  ;;; enqueue the PID to a redis queue
+  "Wrap the unixy command in guile. Anything with an exit status > 1 is
+considered an error"
   (let ((pid (system cmd)))
     (if (> (status:exit-val pid) 0)
         (enqueue-error `((command . ,cmd)
