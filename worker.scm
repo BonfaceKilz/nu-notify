@@ -29,7 +29,7 @@
 
 ;;; Commentary:
 
-;; Dequeue messages from redis. You should wrap this in a daemon
+;; Dequeue messages from redis
 
 ;;; Code:
 (use-modules (redis))
