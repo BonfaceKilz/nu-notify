@@ -1,4 +1,4 @@
-;;; (nu-notify) --- Notification module for Guile
+;;; (nu-notify) --- Simple notifications for Guile
 
 ;; Copyright (C) 2019 Bonface M. K.
 
@@ -30,9 +30,8 @@
 
 ;;; Code:
 
-(define-module (nu-notify)
-  #:use-module (ice-9 format)
-  #:use-module (redis))
+(use-modules (redis)
+             (ice-9 format))
 
 (define (enqueue-error error-message conn)
   (let ((error-sexp (format #f "~a" error-message)))
@@ -47,6 +46,6 @@
     (if (> (status:exit-val pid) 0)
         (enqueue-error `((command . ",cmd")
                          (pid . ,pid))
-                 (redis-connect)))))
+                       (redis-connect)))))
 
 ;;; nu-notify ends here
