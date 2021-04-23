@@ -39,8 +39,7 @@
     (begin
       (redis-send conn (lpush `(queue:error ,error-sexp)))
       (redis-send conn (publish '(channel:error 1)))
-      (redis-close conn)
-      )))
+      (redis-close conn))))
 
 (define (run-unix-cmd cmd)
   "Wrap the unixy command in guile. Anything with an exit status >= 1 is
