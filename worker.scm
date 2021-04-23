@@ -32,6 +32,9 @@
 ;; Dequeue messages from redis
 
 ;;; Code:
+;; Should we turn this into a module and only 
+;; expose certain functions?
+;; If so, which ones?
 (use-modules (redis))
 (use-modules (rnrs bytevectors))
 (use-modules (srfi srfi-1))
