@@ -34,6 +34,7 @@
 ;;; Code:
 (use-modules (redis))
 (use-modules (rnrs bytevectors))
+(use-modules (srfi srfi-1))
 (use-modules (ice-9 iconv))
 (use-modules (ice-9 binary-ports))
 (use-modules (ice-9 textual-ports))
@@ -53,7 +54,7 @@
   (let ((get-sock
 	 (record-accessor
 	  (record-type-descriptor conn)
-	  (caddr (record-type-fields (record-type-descriptor conn))))))
+	  (third (record-type-fields (record-type-descriptor conn))))))
     (get-sock conn)))
 
 (define (subscribe-listen redis-sock)
